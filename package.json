@@ -7,5 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
+  "dependencies": {
+    "spinal-lib-issim": "git+https://github.com/spinalcom/spinal-lib-issim.git"
+  },
   "license": "SEE LICENSE IN license.pdf"
 }
