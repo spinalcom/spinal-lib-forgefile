@@ -8,7 +8,7 @@
   },
   "author": "",
   "dependencies": {
-    "spinal-lib-issim": "git+https://github.com/spinalcom/spinal-lib-issim.git"
+    "spinal-lib-issim": "git+https://github.com/spinalcom/spinal-lib-issim.git#develop"
   },
   "license": "SEE LICENSE IN license.pdf"
 }
