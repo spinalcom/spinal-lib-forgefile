@@ -97,3 +97,19 @@ var ForgeFileItem = class ForgeFileItem extends TreeItem {
 };
 
 exports.ForgeFileItem = ForgeFileItem;
+
+class NoteModel extends Model {
+  constructor(name = "Forge File") {
+    super();
+
+    this.add_attr({
+      id: '',
+      title: '',
+      color: '',
+      username: '',
+      date: Date.now(),
+      allObject: []
+    });
+  }
+}
+exports.NoteModel = NoteModel;
