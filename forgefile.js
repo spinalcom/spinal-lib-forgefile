@@ -13,121 +13,9 @@
 // GNU Lesser General Public License for more details.
 // You should have received a copy of the GNU General Public License
 // along with Soda. If not, see <http://www.gnu.org/licenses/>.
-require("spinal-lib-issim");
-
-// var TreeItem = class TreeItem extends Model {
-//   constructor() {
-//     super();
-//     this.add_attr({
-//       _ico: "",
-//       _name: "",
-//       _children: [],
-//       _output: [],
-//       _viewable: 0, // eye
-//       _allow_vmod: true, // autorise check/uncheck view
-//       _name_class: "",
-//       _context_modules: new Lst(),
-//       _context_actions: new Lst()
-//     });
-//   }
-
-//   add_context_modules(context_module) {
-//     return this._context_modules.push(context_module);
-//   }
-
-//   add_context_actions(context_action) {
-//     return this._context_actions.push(context_action);
-//   }
-
-//   display_suppl_context_actions(context_action) {}
-
-//   //function to overload by adding additionnal actions in context actions
-//   display_context_actions() {
-//     var contex_action;
-//     contex_action = new Lst();
-//     contex_action.push(new TreeAppAction_Save());
-//     this.display_suppl_context_actions(contex_action);
-//     return contex_action;
-//   }
-
-
-//   // child must be an instance of TreeItem
-//   add_child(child) {
-//     return this._children.push(child);
-//   }
-
-//   // remove child, by ref or by num
-//   rem_child(child) {
-//     var j, num_c, ref;
-//     if (child instanceof TreeItem) {
-//       for (num_c = j = 0, ref = this._children.length; 0 <= ref ? j < ref : j > ref; num_c = 0 <= ref ? ++j : --j) {
-//         if (this._children[num_c] === child) {
-//           this._children.splice(num_c, 1);
-//           return;
-//         }
-//       }
-//     } else {
-//       return this._children.splice(child, 1);
-//     }
-//   }
-
-//   detect_child(f) {
-//     var i, j, len, ref;
-//     ref = this._children;
-//     for (j = 0, len = ref.length; j < len; j++) {
-//       i = ref[j];
-//       if (f(i)) {
-//         return i;
-//       }
-//     }
-//     return void 0;
-//   }
-
-
-//   // child must be an instance of TreeItem
-//   add_output(child) {
-//     return this._output.push(child);
-//   }
-
-//   // remove child, by ref or by num
-//   rem_output(child) {
-//     var j, num_c, ref;
-//     if (child instanceof TreeItem) {
-//       for (num_c = j = 0, ref = this._output.length; 0 <= ref ? j < ref : j > ref; num_c = 0 <= ref ? ++j : --j) {
-//         if (this._output[num_c] === child) {
-//           this._output.splice(num_c, 1);
-//           return;
-//         }
-//       }
-//     } else {
-//       return this._output.splice(child, 1);
-//     }
-//   }
-
-//   draw(info) {
-//     var j, len, ref, results, s;
-//     if (this.sub_canvas_items != null) {
-//       ref = this.sub_canvas_items();
-//       results = [];
-//       for (j = 0, len = ref.length; j < len; j++) {
-//         s = ref[j];
-//         results.push(s.draw(info));
-//       }
-//       return results;
-//     }
-//   }
-
-//   anim_min_max() {}
-
-//   z_index() {
-//     return 0;
-//   }
-
-//   to_string() {
-//     return this._name.get();
-//   }
-
-// };
+var issim = require('spinal-lib-issim');
+var TreeItem = issim.TreeItem;
+var exports = module.exports = {};
 
 
 var ForgeFileDerivativesItem = class ForgeFileDerivativesItem extends TreeItem {
@@ -177,6 +65,7 @@ var ForgeFileDerivativesItem = class ForgeFileDerivativesItem extends TreeItem {
   }
 
 };
+exports.ForgeFileDerivativesItem = ForgeFileDerivativesItem;
 
 var ForgeFileItem = class ForgeFileItem extends TreeItem {
   constructor(name = "Forge File") {
@@ -185,7 +74,7 @@ var ForgeFileItem = class ForgeFileItem extends TreeItem {
     this._viewable.set(false);
 
 
-    tmp = {
+    let tmp = {
       name: this._name,
       filepath: new Path(),
       state: new Choice(0, ["Initial",
@@ -206,3 +95,5 @@ var ForgeFileItem = class ForgeFileItem extends TreeItem {
     return (ch instanceof ForgeFileDerivativesItem);
   }
 };
+
+exports.ForgeFileItem = ForgeFileItem;
