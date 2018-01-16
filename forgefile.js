@@ -98,7 +98,7 @@ var ForgeFileItem = class ForgeFileItem extends TreeItem {
 
 exports.ForgeFileItem = ForgeFileItem;
 
-class NoteModel extends Model {
+var NoteModel = class NoteModel extends Model {
   constructor(name = "Forge File") {
     super();
 
