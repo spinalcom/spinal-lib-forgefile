@@ -13,12 +13,10 @@
 // GNU Lesser General Public License for more details.
 // You should have received a copy of the GNU General Public License
 // along with Soda. If not, see <http://www.gnu.org/licenses/>.
-var issim = require('spinal-lib-issim');
-var TreeItem = issim.TreeItem;
 var exports = module.exports = {};
 
 
-var ForgeFileDerivativesItem = class ForgeFileDerivativesItem extends TreeItem {
+var ForgeFileDerivativesItem = class ForgeFileDerivativesItem extends Model {
   constructor(params) {
     var i, item, k, len, name, ref, res, v;
     super();
@@ -32,9 +30,11 @@ var ForgeFileDerivativesItem = class ForgeFileDerivativesItem extends TreeItem {
       name = "no name";
     }
     this.add_attr({
-      name: name
+      _name: name,
+      _viewable: false,
+      _children: [],
+      name: name,
     });
-    this._name.set(this.name);
     if (!params) {
       return;
     }
@@ -59,6 +59,9 @@ var ForgeFileDerivativesItem = class ForgeFileDerivativesItem extends TreeItem {
   }
 
   display_suppl_context_actions(context_action) {}
+  add_child(child) {
+    this._children.push(child);
+  }
 
   accept_child(ch) {
     return ch instanceof ForgeFileDerivativesItem;
@@ -67,15 +70,14 @@ var ForgeFileDerivativesItem = class ForgeFileDerivativesItem extends TreeItem {
 };
 exports.ForgeFileDerivativesItem = ForgeFileDerivativesItem;
 
-var ForgeFileItem = class ForgeFileItem extends TreeItem {
+var ForgeFileItem = class ForgeFileItem extends Model {
   constructor(name = "Forge File") {
     super();
-    this._name.set(name);
-    this._viewable.set(false);
-
-
     let tmp = {
-      name: this._name,
+      _name: name,
+      _viewable: false,
+      _children: [],
+      name: name,
       filepath: new Path(),
       state: new Choice(0, ["Initial",
         "Uploading", "Uploading completed",
@@ -90,7 +92,9 @@ var ForgeFileItem = class ForgeFileItem extends TreeItem {
     };
     this.add_attr(tmp);
   }
-
+  add_child(child) {
+    this._children.push(child);
+  }
   accept_child(ch) {
     return (ch instanceof ForgeFileDerivativesItem);
   }
@@ -99,7 +103,7 @@ var ForgeFileItem = class ForgeFileItem extends TreeItem {
 exports.ForgeFileItem = ForgeFileItem;
 
 var NoteModel = class NoteModel extends Model {
-  constructor(name = "Forge File") {
+  constructor(name = "NoteModel") {
     super();
 
     this.add_attr({
@@ -108,8 +112,9 @@ var NoteModel = class NoteModel extends Model {
       color: '',
       username: '',
       date: Date.now(),
+      owner: "",
       allObject: []
     });
   }
-}
+};
 exports.NoteModel = NoteModel;
