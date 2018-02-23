@@ -15,59 +15,34 @@
 // along with Soda. If not, see <http://www.gnu.org/licenses/>.
 var exports = module.exports = {};
 
-
 var ForgeFileDerivativesItem = class ForgeFileDerivativesItem extends Model {
   constructor(params) {
-    var i, item, k, len, name, ref, res, v;
     super();
-    if (params != null && params.outputType) {
-      name = params.outputType;
-    } else if (params != null && params.name) {
-      name = params.name;
-    } else if (params != null && params.role) {
-      name = params.role;
-    } else {
-      name = "no name";
+    if (!params) {
+      params = {};
+    }
+    if ((params != null ? params.name : void 0) == null) {
+      params.name = "unnamed";
+    }
+    if ((params != null ? params.path : void 0) == null) {
+      params.path = ".";
     }
     this.add_attr({
-      _name: name,
-      _viewable: false,
-      _children: [],
-      name: name,
+      name: params.name,
+      path: params.path
     });
-    if (!params) {
-      return;
-    }
-    res = {};
-    for (k in params) {
-      v = params[k];
-      if (params.hasOwnProperty(k)) {
-        if (k === "name") {
-          continue;
-        } else if (k === "children") {
-          ref = params[k];
-          for (i = 0, len = ref.length; i < len; i++) {
-            item = ref[i];
-            this.add_child(new ForgeFileDerivativesItem(item));
-          }
-        } else {
-          res[k] = params[k];
-        }
-      }
-    }
-    this.add_attr(res);
+    this._name = this.name;
   }
 
-  display_suppl_context_actions(context_action) {}
   add_child(child) {
     this._children.push(child);
   }
 
   accept_child(ch) {
-    return ch instanceof ForgeFileDerivativesItem;
+    return false;
   }
-
 };
+
 exports.ForgeFileDerivativesItem = ForgeFileDerivativesItem;
 
 var ForgeFileItem = class ForgeFileItem extends Model {
