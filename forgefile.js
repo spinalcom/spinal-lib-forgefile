@@ -98,6 +98,26 @@ var ForgeFileItem = class ForgeFileItem extends TreeItem {
 
 exports.ForgeFileItem = ForgeFileItem;
 
+
+var ThemeModel = class ThemeModel extends Model {
+  constructor(){
+    super()
+    this.add_attr({
+      id : "",
+      name : "",
+      owner : "",
+      username : "",
+      creation : "",
+      listModel : []
+    })
+  }
+
+
+}
+
+exports.ThemeModel = ThemeModel;
+
+
 var NoteModel = class NoteModel extends Model {
   constructor(name = "Forge File") {
     super();
@@ -106,10 +126,46 @@ var NoteModel = class NoteModel extends Model {
       id: '',
       title: '',
       color: '',
-      username: '',
-      date: Date.now(),
-      allObject: []
+      owner: '',
+      username : '',
+      date: '',
+      allObject: [],
+      notes : [],
+      view : false,
+      files : new Directory()
     });
   }
 }
+
 exports.NoteModel = NoteModel;
+
+var MessageModel = class MessageModel extends Model {
+  constructor() {
+    super();
+     this.add_attr({
+      id : '',
+      username : '',
+      owner : '',
+      message : '',
+      date : ''
+    });
+  }
+}
+
+exports.MessageModel = MessageModel;
+
+
+var FileModel = class FileModel extends Model {
+  constructor(file) {
+    super();
+    this.add_attr({
+      id : '',
+      username : '',
+      owner : '',
+      name : '',
+      date : '',
+      path : new Path()
+    })
+  }
+}
+exports.FileModel = FileModel;
