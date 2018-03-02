@@ -36,6 +36,7 @@ var endPoint = class endPoint extends Model {
     var timeserie = new endpoint_TimeSeries();
     this.add_attr({
       display: false,
+      on_off: false,
       id: '',
       title: '',
       color: '',
