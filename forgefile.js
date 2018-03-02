@@ -149,4 +149,9 @@ var FileModel = class FileModel extends Model {
 };
 exports.FileModel = FileModel;
 //require('./bimTree');
-require('./endPoint.js');
+function concat_lib(lib) {
+  for (var key in lib) {
+    module.exports[key] = lib[key];
+  }
+}
+concat_lib(require("./endPoint.js"));
