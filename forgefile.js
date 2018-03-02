@@ -79,15 +79,15 @@ exports.ForgeFileItem = ForgeFileItem;
 
 
 var ThemeModel = class ThemeModel extends Model {
-  constructor(){
+  constructor() {
     super()
     this.add_attr({
-      id : "",
-      name : "",
-      owner : "",
-      username : "",
-      creation : "",
-      listModel : []
+      id: "",
+      name: "",
+      owner: "",
+      username: "",
+      creation: "",
+      listModel: []
     })
   }
 
@@ -106,31 +106,30 @@ var NoteModel = class NoteModel extends Model {
       title: '',
       color: '',
       owner: '',
-      username : '',
+      username: '',
       date: Date.now(),
       allObject: [],
-      notes : [],
-      view : false,
-      files : new Directory()
+      notes: [],
+      view: false,
+      files: new Directory()
     });
   }
-}
-exports.NoteModel = NoteModel;
+};
 
 exports.NoteModel = NoteModel;
 
 var MessageModel = class MessageModel extends Model {
   constructor() {
     super();
-     this.add_attr({
-      id : '',
-      username : '',
-      owner : '',
-      message : '',
-      date : ''
+    this.add_attr({
+      id: '',
+      username: '',
+      owner: '',
+      message: '',
+      date: ''
     });
   }
-}
+};
 
 exports.MessageModel = MessageModel;
 
@@ -139,13 +138,15 @@ var FileModel = class FileModel extends Model {
   constructor(file) {
     super();
     this.add_attr({
-      id : '',
-      username : '',
-      owner : '',
-      name : '',
-      date : '',
-      path : new Path()
-    })
+      id: '',
+      username: '',
+      owner: '',
+      name: '',
+      date: '',
+      path: new Path()
+    });
   }
-}
+};
 exports.FileModel = FileModel;
+//require('./bimTree');
+require('./endPoint.js');
