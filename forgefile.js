@@ -15,6 +15,22 @@
 // along with Soda. If not, see <http://www.gnu.org/licenses/>.
 var exports = module.exports = {};
 
+function modelRdy_defer(model, promise) {
+  if (!model._server_id || FileSystem._tmp_objects[model._server_id]) {
+    setTimeout(() => {
+      modelRdy_defer(model, promise);
+    }, 200);
+    return;
+  }
+  promise(model);
+}
+
+function waitModelReady(model) {
+  return new Promise(function (resolve, reject) {
+    modelRdy_defer(model, resolve);
+  });
+}
+
 var ForgeFileDerivativesItem = class ForgeFileDerivativesItem extends Model {
   constructor(params) {
     super();
@@ -79,38 +95,44 @@ exports.ForgeFileItem = ForgeFileItem;
 
 
 var ThemeModel = class ThemeModel extends Model {
-  constructor(){
-    super()
+  constructor() {
+    super();
     this.add_attr({
-      name : "",
-      owner : "",
-      username : "",
-      creation : Date.now(),
-      listModel : []
-    })
+      name: "",
+      owner: "",
+      username: "",
+      creation: Date.now(),
+      listModel: []
+    });
   }
-  
+
   get_obj() {
-    let obj = {
-      name : this.name.get(),
-      owner : this.owner.get(),
-      username : this.username.get(),
-      creation : this.creation.get(),
-      listModel : [],
-      _server_id : this._server_id
-    }
-
-    for (var i = 0; i < this.listModel.length; i++) {
-      obj.listModel.push(this.listModel[i].get_obj());
-    }
-
-    return obj;
+    let _self = this;
+    return new Promise((resolve, reject) => {
+      waitModelReady(_self).then(() => {
+        let obj = {
+          name: _self.name.get(),
+          owner: _self.owner.get(),
+          username: _self.username.get(),
+          creation: _self.creation.get(),
+          _server_id: _self._server_id
+        };
+        let listModel = [], i = 0;
+        for (; i < _self.listModel.length; i++) {
+          console.log("TEST");
+          console.log(_self.listModel[i]);
+          listModel.push(_self.listModel[i].get_obj());
+          console.log("TEST2");
+        }
+        Promise.all(listModel).then(function (res) {
+          obj.listModel = res;
+          resolve(obj);
+        });
+      });
+    });
   }
-
-}
-
+};
 exports.ThemeModel = ThemeModel;
-
 
 var NoteModel = class NoteModel extends Model {
   constructor(name = "NoteModel") {
@@ -120,68 +142,78 @@ var NoteModel = class NoteModel extends Model {
       title: '',
       color: '',
       owner: '',
-      username : '',
+      username: '',
       date: Date.now(),
       allObject: [],
-      notes : [],
-      display : false,
-      files : new Directory()
+      notes: [],
+      display: false,
+      files: new Directory()
     });
   }
 
   get_obj() {
-    let obj = {
-      title: this.title.get(),
-      color: this.color.get(),
-      owner: this.owner.get(),
-      username : this.username.get(),
-      date: this.date.get(),
-      allObject: [],
-      notes : [],
-      display : this.display.get(),
-      files : this.files.get(),
-      _server_id : this._server_id
-    }
+    let _self = this;
+    return new Promise(function (resolve, reject) {
+      waitModelReady(_self).then(function () {
+        let obj = {
+          title: _self.title.get(),
+          color: _self.color.get(),
+          owner: _self.owner.get(),
+          username: _self.username.get(),
+          date: _self.date.get(),
+          display: _self.display.get(),
+          files: _self.files.get(),
+          _server_id: _self._server_id
+        };
+        let allObject = [], notes = [], i = 0;
+        for (; i < _self.allObject.length; i++) {
+          allObject.push(_self.allObject[i].get_obj());
+        }
+        for (i = 0; i < _self.notes.length; i++) {
+          notes.push(_self.notes[i].get_obj());
+        }
 
-    for (var i = 0; i < this.allObject.length; i++) {
-      obj.allObject.push(this.allObject[i])
-    }
-
-    for (var i = 0; i < this.notes.length; i++) {
-      obj.notes.push(this.notes[i].get_obj())
-    }
-    return obj;
+        Promise.all(allObject).then(function (object) {
+          obj.allObject = object;
+          Promise.all(notes).then(function (note) {
+            obj.notes = note;
+            resolve(obj);
+          });
+        });
+      });
+    });
   }
-
-
-
-}
+};
 exports.NoteModel = NoteModel;
-
 
 var MessageModel = class MessageModel extends Model {
   constructor() {
     super();
     this.add_attr({
-      username : '',
-      owner : '',
-      message : '',
-      date : Date.now()
+      username: '',
+      owner: '',
+      message: '',
+      date: Date.now()
     });
   }
-  
-  get_obj() {
-    let obj = {
-      username : this.username.get(),
-      owner : this.owner.get(),
-      message : this.message.get(),
-      date : this.date.get(),
-      _server_id : this._server_id
-    }
 
-    return obj;
+  get_obj() {
+    let _self = this;
+    return new Promise((resolve, reject) => {
+      waitModelReady(_self).then(() => {
+        let obj = {
+          username: _self.username.get(),
+          owner: _self.owner.get(),
+          message: _self.message.get(),
+          date: _self.date.get(),
+          _server_id: _self._server_id
+        };
+        resolve(obj);
+      });
+    });
+
   }
-}
+};
 
 exports.MessageModel = MessageModel;
 
@@ -190,26 +222,28 @@ var FileModel = class FileModel extends Model {
   constructor(file) {
     super();
     this.add_attr({
-      username : '',
-      owner : '',
-      name : '',
-      date : '',
-      path : new Path()
-    })
+      username: '',
+      owner: '',
+      name: '',
+      date: '',
+      path: new Path()
+    });
   }
 
   get_obj() {
-    let obj = {
-      username : this.username.get(),
-      owner : this.owner.get(),
-      name : this.name.get(),
-      date : this.date.get(),
-      _server_id : this._server_id
-    }
-
-    return obj;
-
+    let _self = this;
+    return new Promise((resolve, reject) => {
+      waitModelReady(_self).then(() => {
+        let obj = {
+          username: _self.username.get(),
+          owner: _self.owner.get(),
+          name: _self.name.get(),
+          date: _self.date.get(),
+          _server_id: _self._server_id
+        };
+        resolve(obj);
+      });
+    });
   }
-
-}
+};
 exports.FileModel = FileModel;
