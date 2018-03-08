@@ -79,18 +79,33 @@ exports.ForgeFileItem = ForgeFileItem;
 
 
 var ThemeModel = class ThemeModel extends Model {
-  constructor() {
+  constructor(){
     super()
     this.add_attr({
-      id: "",
-      name: "",
-      owner: "",
-      username: "",
-      creation: "",
-      listModel: []
+      name : "",
+      owner : "",
+      username : "",
+      creation : Date.now(),
+      listModel : []
     })
   }
+  
+  get_obj() {
+    let obj = {
+      name : this.name.get(),
+      owner : this.owner.get(),
+      username : this.username.get(),
+      creation : this.creation.get(),
+      listModel : [],
+      _server_id : this._server_id
+    }
 
+    for (var i = 0; i < this.listModel.length; i++) {
+      obj.listModel.push(this.listModel[i].get_obj());
+    }
+
+    return obj;
+  }
 
 }
 
@@ -102,34 +117,71 @@ var NoteModel = class NoteModel extends Model {
     super();
 
     this.add_attr({
-      id: '',
       title: '',
       color: '',
       owner: '',
-      username: '',
+      username : '',
       date: Date.now(),
       allObject: [],
-      notes: [],
-      view: false,
-      files: new Directory()
+      notes : [],
+      display : false,
+      files : new Directory()
     });
   }
-};
 
+  get_obj() {
+    let obj = {
+      title: this.title.get(),
+      color: this.color.get(),
+      owner: this.owner.get(),
+      username : this.username.get(),
+      date: this.date.get(),
+      allObject: [],
+      notes : [],
+      display : this.display.get(),
+      files : this.files.get(),
+      _server_id : this._server_id
+    }
+
+    for (var i = 0; i < this.allObject.length; i++) {
+      obj.allObject.push(this.allObject[i])
+    }
+
+    for (var i = 0; i < this.notes.length; i++) {
+      obj.notes.push(this.notes[i].get_obj())
+    }
+    return obj;
+  }
+
+
+
+}
 exports.NoteModel = NoteModel;
+
 
 var MessageModel = class MessageModel extends Model {
   constructor() {
     super();
     this.add_attr({
-      id: '',
-      username: '',
-      owner: '',
-      message: '',
-      date: ''
+      username : '',
+      owner : '',
+      message : '',
+      date : Date.now()
     });
   }
-};
+  
+  get_obj() {
+    let obj = {
+      username : this.username.get(),
+      owner : this.owner.get(),
+      message : this.message.get(),
+      date : this.date.get(),
+      _server_id : this._server_id
+    }
+
+    return obj;
+  }
+}
 
 exports.MessageModel = MessageModel;
 
@@ -138,20 +190,26 @@ var FileModel = class FileModel extends Model {
   constructor(file) {
     super();
     this.add_attr({
-      id: '',
-      username: '',
-      owner: '',
-      name: '',
-      date: '',
-      path: new Path()
-    });
+      username : '',
+      owner : '',
+      name : '',
+      date : '',
+      path : new Path()
+    })
   }
-};
-exports.FileModel = FileModel;
-//require('./bimTree');
-function concat_lib(lib) {
-  for (var key in lib) {
-    module.exports[key] = lib[key];
+
+  get_obj() {
+    let obj = {
+      username : this.username.get(),
+      owner : this.owner.get(),
+      name : this.name.get(),
+      date : this.date.get(),
+      _server_id : this._server_id
+    }
+
+    return obj;
+
   }
+
 }
-concat_lib(require("./endPoint.js"));
+exports.FileModel = FileModel;
