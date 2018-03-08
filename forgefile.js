@@ -162,22 +162,32 @@ var NoteModel = class NoteModel extends Model {
           username: _self.username.get(),
           date: _self.date.get(),
           display: _self.display.get(),
-          files: _self.files.get(),
+          // files: _self.files.get(),
+          // allObject : _self.allObject.get(),
           _server_id: _self._server_id
         };
-        let allObject = [], notes = [], i = 0;
-        for (; i < _self.allObject.length; i++) {
-          allObject.push(_self.allObject[i].get_obj());
-        }
+        let allObject = [], notes = [], files = [], i = 0;
         for (i = 0; i < _self.notes.length; i++) {
           notes.push(_self.notes[i].get_obj());
         }
 
-        Promise.all(allObject).then(function (object) {
-          obj.allObject = object;
-          Promise.all(notes).then(function (note) {
-            obj.notes = note;
-            resolve(obj);
+        for (i = 0; i < _self.files.length; i++) {
+          files.push(waitModelReady(_self.files[i]));
+        }
+
+        for (let index = 0; index < _self.allObject.length; index++) {
+          const element = _self.allObject[index];
+          allObject.push(waitModelReady(element));
+        }
+        Promise.all(allObject).then(function (objects) {
+          obj.allObject = objects;
+
+          Promise.all(files).then(function (files) {
+            obj.files = files;
+            Promise.all(notes).then(function (note) {
+              obj.notes = note;
+              resolve(obj);
+             });
           });
         });
       });
