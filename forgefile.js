@@ -102,6 +102,7 @@ var ThemeModel = class ThemeModel extends Model {
       owner: "",
       username: "",
       creation: Date.now(),
+      viewAll : false,
       listModel: []
     });
   }
@@ -115,14 +116,12 @@ var ThemeModel = class ThemeModel extends Model {
           owner: _self.owner.get(),
           username: _self.username.get(),
           creation: _self.creation.get(),
+          viewAll : _self.viewAll.get(),
           _server_id: _self._server_id
         };
         let listModel = [], i = 0;
         for (; i < _self.listModel.length; i++) {
-          console.log("TEST");
-          console.log(_self.listModel[i]);
           listModel.push(_self.listModel[i].get_obj());
-          console.log("TEST2");
         }
         Promise.all(listModel).then(function (res) {
           obj.listModel = res;
