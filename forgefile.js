@@ -94,165 +94,207 @@ var ForgeFileItem = class ForgeFileItem extends Model {
 exports.ForgeFileItem = ForgeFileItem;
 
 
-var ThemeModel = class ThemeModel extends Model {
-  constructor() {
-    super();
-    this.add_attr({
-      name: "",
-      owner: "",
-      username: "",
-      creation: Date.now(),
-      viewAll : false,
-      listModel: []
-    });
-  }
+// var ThemeModel = class ThemeModel extends Model {
+//   constructor() {
+//     super();
+//     this.add_attr({
+//       name: "",
+//       owner: "",
+//       username: "",
+//       creation: Date.now(),
+//       viewAll : false,
+//       listModel: []
+//     });
+//   }
 
-  get_obj() {
-    let _self = this;
-    return new Promise((resolve, reject) => {
-      waitModelReady(_self).then(() => {
-        let obj = {
-          name: _self.name.get(),
-          owner: _self.owner.get(),
-          username: _self.username.get(),
-          creation: _self.creation.get(),
-          viewAll : _self.viewAll.get(),
-          _server_id: _self._server_id
-        };
-        let listModel = [], i = 0;
-        for (; i < _self.listModel.length; i++) {
-          listModel.push(_self.listModel[i].get_obj());
-        }
-        Promise.all(listModel).then(function (res) {
-          obj.listModel = res;
-          resolve(obj);
-        });
-      });
-    });
-  }
-};
-exports.ThemeModel = ThemeModel;
+//   get_obj() {
+//     let _self = this;
+//     return new Promise((resolve, reject) => {
+//       waitModelReady(_self).then(() => {
+//         let obj = {
+//           name: _self.name.get(),
+//           owner: _self.owner.get(),
+//           username: _self.username.get(),
+//           creation: _self.creation.get(),
+//           viewAll : _self.viewAll.get(),
+//           _server_id: _self._server_id
+//         };
+//         let listModel = [], i = 0;
+//         for (; i < _self.listModel.length; i++) {
+//           listModel.push(_self.listModel[i].get_obj());
+//         }
+//         Promise.all(listModel).then(function (res) {
+//           obj.listModel = res;
+//           resolve(obj);
+//         });
+//       });
+//     });
+//   }
+// };
+// exports.ThemeModel = ThemeModel;
 
-var NoteModel = class NoteModel extends Model {
-  constructor(name = "NoteModel") {
-    super();
+// var NoteModel = class NoteModel extends Model {
+//   constructor(name = "NoteModel") {
+//     super();
 
-    this.add_attr({
-      title: '',
-      color: '',
-      owner: '',
-      username: '',
-      date: Date.now(),
-      allObject: [],
-      notes: [],
-      display: false,
-      files: new Directory()
-    });
-  }
+//     this.add_attr({
+//       title: '',
+//       color: '',
+//       owner: '',
+//       username: '',
+//       date: Date.now(),
+//       allObject: [],
+//       notes: [],
+//       display: false,
+//       files: new Directory(),
+//       links : [],
+//     });
+//   }
 
-  get_obj() {
-    let _self = this;
-    return new Promise(function (resolve, reject) {
-      waitModelReady(_self).then(function () {
-        let obj = {
-          title: _self.title.get(),
-          color: _self.color.get(),
-          owner: _self.owner.get(),
-          username: _self.username.get(),
-          date: _self.date.get(),
-          display: _self.display.get(),
-          // files: _self.files.get(),
-          // allObject : _self.allObject.get(),
-          _server_id: _self._server_id
-        };
-        let allObject = [], notes = [], files = [], i = 0;
-        for (i = 0; i < _self.notes.length; i++) {
-          notes.push(_self.notes[i].get_obj());
-        }
+//   get_obj() {
+//     let _self = this;
+//     return new Promise(function (resolve, reject) {
+//       waitModelReady(_self).then(function () {
+//         let obj = {
+//           title: _self.title.get(),
+//           color: _self.color.get(),
+//           owner: _self.owner.get(),
+//           username: _self.username.get(),
+//           date: _self.date.get(),
+//           display: _self.display.get(),
+//           // files: _self.files.get(),
+//           // allObject : _self.allObject.get(),
+//           _server_id: _self._server_id
+//         };
+//         let allObject = [], notes = [], files = [], links = [], i = 0;
+        
+//         for (i = 0; i < _self.notes.length; i++) {
+//           notes.push(_self.notes[i].get_obj());
+//         }
 
-        for (i = 0; i < _self.files.length; i++) {
-          files.push(waitModelReady(_self.files[i]));
-        }
+//         for (i = 0; i < _self.files.length; i++) {
+//           files.push(waitModelReady(_self.files[i]));
+//         }
 
-        for (let index = 0; index < _self.allObject.length; index++) {
-          const element = _self.allObject[index];
-          allObject.push(waitModelReady(element));
-        }
-        Promise.all(allObject).then(function (objects) {
-          obj.allObject = objects;
+//         for (i = 0; i < _self.links.length; i++) {
+//           links.push(waitModelReady(_self.links[i].get_obj()));
+//         }
 
-          Promise.all(files).then(function (files) {
-            obj.files = files;
-            Promise.all(notes).then(function (note) {
-              obj.notes = note;
-              resolve(obj);
-             });
-          });
-        });
-      });
-    });
-  }
-};
-exports.NoteModel = NoteModel;
+//         for (let index = 0; index < _self.allObject.length; index++) {
+//           const element = _self.allObject[index];
+//           allObject.push(waitModelReady(element));
+//         }
+//         Promise.all(links).then(function (links) {
+//           obj.links = links;
+//           Promise.all(allObject).then(function (objects) {
+//             obj.allObject = objects;
 
-var MessageModel = class MessageModel extends Model {
-  constructor() {
-    super();
-    this.add_attr({
-      username: '',
-      owner: '',
-      message: '',
-      date: Date.now()
-    });
-  }
-
-  get_obj() {
-    let _self = this;
-    return new Promise((resolve, reject) => {
-      waitModelReady(_self).then(() => {
-        let obj = {
-          username: _self.username.get(),
-          owner: _self.owner.get(),
-          message: _self.message.get(),
-          date: _self.date.get(),
-          _server_id: _self._server_id
-        };
-        resolve(obj);
-      });
-    });
-
-  }
-};
-
-exports.MessageModel = MessageModel;
+//             Promise.all(files).then(function (files) {
+//               obj.files = files;
+//               Promise.all(notes).then(function (note) {
+//                 obj.notes = note;
+//                 resolve(obj);
+//               });
+//             });
+//           });
+//         })
+//       });
+//     });
+//   }
+// };
+// exports.NoteModel = NoteModel;
 
 
-var FileModel = class FileModel extends Model {
-  constructor(file) {
-    super();
-    this.add_attr({
-      username: '',
-      owner: '',
-      name: '',
-      date: '',
-      path: new Path()
-    });
-  }
 
-  get_obj() {
-    let _self = this;
-    return new Promise((resolve, reject) => {
-      waitModelReady(_self).then(() => {
-        let obj = {
-          username: _self.username.get(),
-          owner: _self.owner.get(),
-          name: _self.name.get(),
-          date: _self.date.get(),
-          _server_id: _self._server_id
-        };
-        resolve(obj);
-      });
-    });
-  }
-};
-exports.FileModel = FileModel;
+// var LinkModel = class LinkModel extends Model {
+//   constructor() {
+//     super()
+//     this.add_attr({
+//       label : "",
+//       link : "",
+//       owner : "",
+//       username : ""
+//     })
+//   }
+
+//   get_obj() {
+//     let _self = this;
+
+//     return new Promise((resolve,reject) => {
+//       waitModelReady(_self).then(() => {
+//         let obj = {
+//           label : _self.label.get(),
+//           link : _self.link.get(),
+//           owner : _self.owner.get(),
+//           username : _self.username.get(),
+//           _server_id: _self._server_id
+//         }
+
+//         resolve(obj);
+//       })
+//     })
+//   }
+// }
+
+
+// var MessageModel = class MessageModel extends Model {
+//   constructor() {
+//     super();
+//     this.add_attr({
+//       username: '',
+//       owner: '',
+//       message: '',
+//       date: Date.now()
+//     });
+//   }
+
+//   get_obj() {
+//     let _self = this;
+//     return new Promise((resolve, reject) => {
+//       waitModelReady(_self).then(() => {
+//         let obj = {
+//           username: _self.username.get(),
+//           owner: _self.owner.get(),
+//           message: _self.message.get(),
+//           date: _self.date.get(),
+//           _server_id: _self._server_id
+//         };
+//         resolve(obj);
+//       });
+//     });
+
+//   }
+// };
+
+// exports.MessageModel = MessageModel;
+
+
+// var FileModel = class FileModel extends Model {
+//   constructor(file) {
+//     super();
+//     this.add_attr({
+//       username: '',
+//       owner: '',
+//       name: '',
+//       date: '',
+//       path: new Path()
+//     });
+//   }
+
+//   get_obj() {
+//     let _self = this;
+//     return new Promise((resolve, reject) => {
+//       waitModelReady(_self).then(() => {
+//         let obj = {
+//           username: _self.username.get(),
+//           owner: _self.owner.get(),
+//           name: _self.name.get(),
+//           date: _self.date.get(),
+//           _server_id: _self._server_id
+//         };
+//         resolve(obj);
+//       });
+//     });
+//   }
+// };
+// exports.FileModel = FileModel;
