@@ -16,9 +16,9 @@
 require("spinal-core-connectorjs");
 
 var exports = (module.exports = {});
-let organTyepe = window ? window : global;
+let organType = typeof window === "undefined" ? global : window;
 
-var ForgeFileDerivativesItem = class ForgeFileDerivativesItem extends organTyepe.Model {
+var ForgeFileDerivativesItem = class ForgeFileDerivativesItem extends organType.Model {
   constructor(params) {
     super();
     if (!params) {
@@ -48,7 +48,7 @@ var ForgeFileDerivativesItem = class ForgeFileDerivativesItem extends organTyepe
 
 exports.ForgeFileDerivativesItem = ForgeFileDerivativesItem;
 
-var ForgeFileItem = class ForgeFileItem extends organTyepe.Model {
+var ForgeFileItem = class ForgeFileItem extends organType.Model {
   constructor(name = "Forge File") {
     super();
     let tmp = {
@@ -56,8 +56,8 @@ var ForgeFileItem = class ForgeFileItem extends organTyepe.Model {
       _viewable: false,
       _children: [],
       name: name,
-      filepath: new organTyepe.Path(),
-      state: new organTyepe.Choice(0, [
+      filepath: new organType.Path(),
+      state: new organType.Choice(0, [
         "Initial",
         "Uploading",
         "Uploading completed",
