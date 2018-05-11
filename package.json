@@ -1,6 +1,6 @@
 {
   "name": "spinal-lib-forgefile",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "main": "forgefile.js",
   "scripts": {
@@ -8,8 +8,7 @@
   },
   "author": "",
   "dependencies": {
-    "spinal-core-connectorjs":
-      "git+https://github.com/spinalcom/spinal-core-connectorjs.git"
+    "spinal-core-connectorjs": "git+https://github.com/spinalcom/spinal-core-connectorjs.git"
   },
   "license": "SEE LICENSE IN license.pdf"
 }
