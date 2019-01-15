@@ -1,24 +1,32 @@
-// Copyright 2015 SpinalCom  www.spinalcom.com
+/*
+ * Copyright 2018 SpinalCom - www.spinalcom.com
+ *
+ * This file is part of SpinalCore.
+ *
+ * Please read all of the following terms and conditions
+ * of the Free Software license Agreement ("Agreement")
+ * carefully.
+ *
+ * This Agreement is a legally binding contract between
+ * the Licensee (as defined below) and SpinalCom that
+ * sets forth the terms and conditions that govern your
+ * use of the Program. By installing and/or using the
+ * Program, you agree to abide by all the terms and
+ * conditions stated or referenced herein.
+ *
+ * If you do not agree to abide by these terms and
+ * conditions, do not demonstrate your acceptance and do
+ * not install or use the Program.
+ * You should have received a copy of the license along
+ * with this file. If not, see
+ * <http://resources.spinalcom.com/licenses.pdf>.
+ */
 
-// This file is part of SpinalCore.
+import {
+  spinalCore, Model, Path, Choice
+} from "spinal-core-connectorjs_type";
 
-// SpinalCore is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-
-// Soda is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU Lesser General Public License for more details.
-// You should have received a copy of the GNU General Public License
-// along with Soda. If not, see <http://www.gnu.org/licenses/>.
-require("spinal-core-connectorjs");
-
-var exports = (module.exports = {});
-let organType = typeof window === "undefined" ? global : window;
-
-var ForgeFileDerivativesItem = class ForgeFileDerivativesItem extends organType.Model {
+export class ForgeFileDerivativesItem extends Model {
   constructor(params) {
     super();
     if (!params) {
@@ -36,19 +44,9 @@ var ForgeFileDerivativesItem = class ForgeFileDerivativesItem extends organType.
     });
     this._name = this.name;
   }
+}
 
-  add_child(child) {
-    this._children.push(child);
-  }
-
-  accept_child() {
-    return false;
-  }
-};
-
-exports.ForgeFileDerivativesItem = ForgeFileDerivativesItem;
-
-var ForgeFileItem = class ForgeFileItem extends organType.Model {
+export class ForgeFileItem extends Model {
   constructor(name = "Forge File") {
     super();
     let tmp = {
@@ -56,8 +54,8 @@ var ForgeFileItem = class ForgeFileItem extends organType.Model {
       _viewable: false,
       _children: [],
       name: name,
-      filepath: new organType.Path(),
-      state: new organType.Choice(0, [
+      filepath: new Path(),
+      state: new Choice(0, [
         "Initial",
         "Uploading",
         "Uploading completed",
@@ -81,6 +79,7 @@ var ForgeFileItem = class ForgeFileItem extends organType.Model {
   accept_child(ch) {
     return ch instanceof ForgeFileDerivativesItem;
   }
-};
+}
 
-exports.ForgeFileItem = ForgeFileItem;
+spinalCore.register_models([ForgeFileItem, ForgeFileDerivativesItem]);
+export default ForgeFileItem;
