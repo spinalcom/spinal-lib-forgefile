@@ -22,11 +22,11 @@
  * <http://resources.spinalcom.com/licenses.pdf>.
  */
 
-import {
+const {
   spinalCore, Model, Path, Choice
-} from "spinal-core-connectorjs_type";
+} = require("spinal-core-connectorjs_type");
 
-export class ForgeFileDerivativesItem extends Model {
+class ForgeFileDerivativesItem extends Model {
   constructor(params) {
     super();
     if (!params) {
@@ -46,7 +46,7 @@ export class ForgeFileDerivativesItem extends Model {
   }
 }
 
-export class ForgeFileItem extends Model {
+class ForgeFileItem extends Model {
   constructor(name = "Forge File") {
     super();
     let tmp = {
@@ -82,4 +82,8 @@ export class ForgeFileItem extends Model {
 }
 
 spinalCore.register_models([ForgeFileItem, ForgeFileDerivativesItem]);
-export default ForgeFileItem;
+module.exports = {
+  default: ForgeFileItem,
+  ForgeFileItem,
+  ForgeFileDerivativesItem
+};

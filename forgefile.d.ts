@@ -23,12 +23,12 @@
  */
 
 declare module "spinal-lib-forgefile" {
-  import {
+  const {
     spinalCore,
     Model,
     Path,
     Choice
-  } from "spinal-core-connectorjs_type";
+  } = require("spinal-core-connectorjs_type");
 
   interface ForgeFileDerivativesItemParams {
     [key: string]: any;
@@ -36,13 +36,13 @@ declare module "spinal-lib-forgefile" {
     path?: string;
   }
 
-  export class ForgeFileDerivativesItem extends Model {
+  class ForgeFileDerivativesItem extends Model {
     name: spinal.Str;
     path: spinal.Str;
     constructor(params?: ForgeFileDerivativesItemParams);
   }
 
-  export class ForgeFileItem extends Model {
+  class ForgeFileItem extends Model {
     _name: spinal.Str;
     _viewable: spinal.Bool;
     _children: spinal.Lst<ForgeFileDerivativesItem>;
@@ -58,5 +58,9 @@ declare module "spinal-lib-forgefile" {
     accept_child(ch: any): boolean;
   }
 
-  export default ForgeFileItem;
+  export = {
+    default: ForgeFileItem,
+    ForgeFileItem,
+    ForgeFileDerivativesItem
+  };
 }
