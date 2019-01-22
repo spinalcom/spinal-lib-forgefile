@@ -1,6 +1,6 @@
 {
   "name": "spinal-lib-forgefile",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "",
   "main": "dist/forgefile.js",
   "scripts": {
