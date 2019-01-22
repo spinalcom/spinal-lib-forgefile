@@ -1,15 +1,24 @@
 {
   "name": "spinal-lib-forgefile",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "",
-  "main": "forgefile.js",
+  "main": "dist/forgefile.js",
   "scripts": {
+    "build": "rm -rf dist && tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "types": "./forgefile.d.ts",
+  "types": "dist/forgefile.d.ts",
   "author": "",
   "dependencies": {
     "spinal-core-connectorjs_type": "git+https://github.com/spinalcom/spinal-core-connectorjs_type.git"
+  },
+  "devDependencies": {
+    "@types/node": "^10.12.12",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.11.0",
+    "tslint-config-airbnb": "^5.11.1",
+    "typescript": "^3.2.4",
+    "typescript-eslint-parser": "^21.0.2"
   },
   "license": "SEE LICENSE IN license.pdf"
 }
